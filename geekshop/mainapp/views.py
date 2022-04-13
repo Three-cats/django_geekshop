@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 
 # Create your views here.
+from mainapp.models import Product, ProductCategories
 
 
 def index(request):
@@ -17,11 +18,9 @@ def load_json(title):
 
 
 def products(request):
-    categories = load_json('categories')
-    cards = load_json('cards')
     content = {
         'title': 'Geekshop - Каталог',
-        'categories': categories,
-        'cards': cards
+        'categories': ProductCategories.objects.all(),
+        'products': Product.objects.all()
     }
     return render(request, 'mainapp/products.html', content)
