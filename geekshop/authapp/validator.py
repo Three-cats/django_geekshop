@@ -19,7 +19,7 @@ def validate_email(value):
 
 
 def validate_fl_name(value):
-    if value.isalpha():
+    if not value.isalpha():
         raise ValidationError(
             _(f"Имя и фамилия должны состоять только из букв"),
             params={'value': value},
