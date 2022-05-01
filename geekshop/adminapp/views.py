@@ -1,3 +1,4 @@
+from unicodedata import name
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -6,8 +7,8 @@ from authapp.models import User
 from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
-from adminapp.forms import CategoryProfileForm, CategoryRegisterForm, UserAdminProfileForm, UserAdminRegisterForm
-from mainapp.models import ProductCategories
+from adminapp.forms import CategoryProfileForm, CategoryRegisterForm, ProductProfileForm, ProductRegisterForm, UserAdminProfileForm, UserAdminRegisterForm
+from mainapp.models import Product, ProductCategories
 
 
 @user_passes_test(lambda u: u.is_superuser)
@@ -72,6 +73,60 @@ def admin_user_delete(request, id):
 
 
 @user_passes_test(lambda u: u.is_superuser)
+def admin_products(request):
+    context = {
+        'title': 'Админка | Продукты',
+        'products': Product.objects.all()
+    }
+    return render(request, 'adminapp/admin-products-read.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_product_create(request):
+    if request.method == 'POST':
+        form = ProductRegisterForm(data=request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('adminapp:admin_products'))
+        else:
+            print(form.errors)
+    else:
+        form = ProductRegisterForm()
+    context = {
+        'title': 'Админка | Создание продукта',
+        'form': form
+    }
+    return render(request, 'adminapp/admin-product-create.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_product_update(request, id):
+    product_select = Product.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProductProfileForm(
+            data=request.POST, instance=product_select, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('adminapp:admin_products'))
+
+    else:
+        form = ProductProfileForm(instance=product_select)
+    context = {
+        'title': 'Админка | Обновление продукта',
+        'form': form,
+        'product_select': product_select
+    }
+    return render(request, 'adminapp/admin-product-update-delete.html', context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_product_delete(request, id):
+    product = Product.objects.get(id=id)
+    product.delete()
+    return HttpResponseRedirect(reverse('adminapp:admin_products'))
+
+
+@user_passes_test(lambda u: u.is_superuser)
 def categories(request):
     context = {
         'title': 'Админка | Категории',
@@ -98,9 +153,10 @@ def category_create(request):
 
     return render(request, 'adminapp/category-create.html', context)
 
+
 @user_passes_test(lambda u: u.is_superuser)
-def category_update(request, name):
-    category_select = ProductCategories.objects.get(name=name)
+def category_update(request, id):
+    category_select = ProductCategories.objects.get(id=id)
     if request.method == 'POST':
         form = CategoryProfileForm(
             data=request.POST, instance=category_select, files=request.FILES)
@@ -119,8 +175,7 @@ def category_update(request, name):
 
 
 @user_passes_test(lambda u: u.is_superuser)
-def category_delete(request, name):
-    category = ProductCategories.objects.get(name=name)
-    category.is_active = False
-    category.save()
+def category_delete(request, id):
+    category = ProductCategories.objects.get(id=id)
+    category.delete()
     return HttpResponseRedirect(reverse('adminapp:categories'))
