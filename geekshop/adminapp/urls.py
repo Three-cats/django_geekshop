@@ -1,14 +1,16 @@
 from django.urls import path
 
-from adminapp.views import admin_product_create, admin_product_delete, admin_product_update, admin_products, admin_users, categories, category_create, category_delete, category_update, index, admin_user_create, admin_user_update, admin_user_delete
+from adminapp.views import IndexTemplateView, UserCreateView, UserDeleteView, UserListView, UserUpdateView, admin_product_create, admin_product_delete, admin_product_update, admin_products, categories, category_create, category_delete, category_update
 
 app_name = 'adminapp'
 urlpatterns = [
-    path('', index, name='index'),
-    path('users/', admin_users, name='admin_users'),
-    path('users_create/', admin_user_create, name='admin_user_create'),
-    path('users_update/<int:id>/', admin_user_update, name='admin_user_update'),
-    path('users_delete/<int:id>/', admin_user_delete, name='admin_user_delete'),
+    path('', IndexTemplateView.as_view(), name='index'),
+    path('users/', UserListView.as_view(), name='admin_users'),
+    path('users_create/', UserCreateView.as_view(), name='admin_user_create'),
+    path('users_update/<int:pk>/', UserUpdateView.as_view(),
+         name='admin_user_update'),
+    path('users_delete/<int:pk>/', UserDeleteView.as_view(),
+         name='admin_user_delete'),
     path('categories/', categories, name='categories'),
     path('category_create/', category_create, name='category_create'),
     path('category_update/<int:id>/', category_update, name='category_update'),
