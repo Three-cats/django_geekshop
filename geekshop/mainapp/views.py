@@ -8,10 +8,10 @@ from mainapp.models import Product, ProductCategories
 
 
 def index(request):
-    content = {
+    context = {
         'title': 'Geekshop'
     }
-    return render(request, 'mainapp/index.html', content)
+    return render(request, 'mainapp/index.html', context)
 
 
 def load_json(title):
@@ -25,21 +25,22 @@ def products(request, id_category=None, page=1):
     else:
         products = Product.objects.all()
 
-    pagination = Paginator(products, per_page=2)
+    paginator = Paginator(products, per_page=2)
 
     try:
-        product_pagination = pagination.page(page)
+        product_paginator = paginator.page(page)
     except PageNotAnInteger:
-        product_pagination = pagination.page(1)
+        product_paginator = paginator.page(1)
     except EmptyPage:
-        product_pagination = pagination.page(pagination.num_pages)
+        product_paginator = paginator.page(paginator.num_pages)
 
-    content = {
+    context = {
         'title': 'Geekshop - Каталог',
         'categories': ProductCategories.objects.all(),
-        'products': product_pagination
+        'products': product_paginator
     }
-    return render(request, 'mainapp/products.html', content)
+
+    return render(request, 'mainapp/products.html', context)
 
 
 class ProductDetail(DetailView):
