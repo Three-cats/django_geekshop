@@ -1,6 +1,7 @@
 from django.urls import path
 
-from adminapp.views import IndexTemplateView, UserCreateView, UserDeleteView, UserListView, UserUpdateView, admin_product_create, admin_product_delete, admin_product_update, admin_products, categories, category_create, category_delete, category_update
+from adminapp.views import CategoryCreateView, CategoryDeleteView, CategoryListView, CategoryUpdateView, IndexTemplateView, ProductCreateView, ProductDeleteView, ProductListView, ProductUpdateView, UserCreateView, UserDeleteView, UserListView, UserUpdateView
+from django.views.i18n import set_language
 
 app_name = 'adminapp'
 urlpatterns = [
@@ -11,14 +12,18 @@ urlpatterns = [
          name='admin_user_update'),
     path('users_delete/<int:pk>/', UserDeleteView.as_view(),
          name='admin_user_delete'),
-    path('categories/', categories, name='categories'),
-    path('category_create/', category_create, name='category_create'),
-    path('category_update/<int:id>/', category_update, name='category_update'),
-    path('category_delete/<int:id>/', category_delete, name='category_delete'),
-    path('products/', admin_products, name='admin_products'),
-    path('product_create/', admin_product_create, name='admin_product_create'),
-    path('product_update/<int:id>/', admin_product_update,
+    path('categories/', CategoryListView.as_view(), name='categories'),
+    path('category_create/', CategoryCreateView.as_view(), name='category_create'),
+    path('category_update/<int:pk>/',
+         CategoryUpdateView.as_view(), name='category_update'),
+    path('category_delete/<int:pk>/',
+         CategoryDeleteView.as_view(), name='category_delete'),
+    path('products/', ProductListView.as_view(), name='admin_products'),
+    path('product_create/', ProductCreateView.as_view(),
+         name='admin_product_create'),
+    path('product_update/<int:pk>/', ProductUpdateView.as_view(),
          name='admin_product_update'),
-    path('product_delete/<int:id>/', admin_product_delete,
+    path('product_delete/<int:pk>/', ProductDeleteView.as_view(),
          name='admin_product_delete'),
+    path('lang/', set_language, name='set_language'),
 ]

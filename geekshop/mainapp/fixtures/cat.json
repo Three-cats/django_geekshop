@@ -1,1 +1,47 @@
-[{"model": "mainapp.productcategories", "pk": 1, "fields": {"name": "Одежда", "descriptions": "Вся одежда"}}, {"model": "mainapp.productcategories", "pk": 2, "fields": {"name": "Обувь", "descriptions": ""}}, {"model": "mainapp.productcategories", "pk": 3, "fields": {"name": "Аксессуары", "descriptions": ""}}, {"model": "mainapp.productcategories", "pk": 4, "fields": {"name": "Новинки", "descriptions": ""}}, {"model": "mainapp.productcategories", "pk": 5, "fields": {"name": "Подарки", "descriptions": ""}}]
+[
+    {
+        "model": "mainapp.productcategories",
+        "pk": 1,
+        "fields": {
+            "name": "Одежда",
+            "descriptions": "Вся одежда",
+            "is_active": "True"
+        }
+    },
+    {
+        "model": "mainapp.productcategories",
+        "pk": 2,
+        "fields": {
+            "name": "Обувь",
+            "descriptions": "",
+            "is_active": "True"
+        }
+    },
+    {
+        "model": "mainapp.productcategories",
+        "pk": 3,
+        "fields": {
+            "name": "Аксессуары",
+            "descriptions": "",
+            "is_active": "True"
+        }
+    },
+    {
+        "model": "mainapp.productcategories",
+        "pk": 4,
+        "fields": {
+            "name": "Новинки",
+            "descriptions": "",
+            "is_active": "True"
+        }
+    },
+    {
+        "model": "mainapp.productcategories",
+        "pk": 5,
+        "fields": {
+            "name": "Подарки",
+            "descriptions": "",
+            "is_active": "True"
+        }
+    }
+]
