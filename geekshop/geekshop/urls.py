@@ -19,6 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url
+from django.views.static import serve
 
 from mainapp.views import index, products
 
@@ -32,6 +33,8 @@ urlpatterns = [
     path('', include('social_django.urls', namespace='social')),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     path('ordersapp/', include('ordersapp.urls', namespace='orders')),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
